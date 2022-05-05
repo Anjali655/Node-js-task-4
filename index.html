@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>index.html</title>
+    <link rel="stylesheet" href="style.css" />
+
+    <style>
+      .close {
+        color: black;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+      }
+
+      #x {
+        position: relative;
+        float: right;
+        background: red;
+        color: white;
+        top: -10px;
+        right: -10px;
+        cursor: pointer;
+      }
+
+      .outer {
+        height: 60px;
+        display: block;
+      }
+
+      .button2 {
+        margin-left: 93%;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        border-radius: 10px;
+      }
+    </style>
+
+  </head>
+  <body>
+    
+    <script type="text/javascript" src="demo.js"></script>
+
+    <form id="formId" name="formId" action="/uploadData" method="POST" enctype="multipart/form-data">
+      <fieldset>
+        <legend><b>User Data Collector</b></legend>
+        <div class="container">
+
+          <div>
+            <input type="text" class="text-input" autocomplete="off" placeholder="First Name" name="first_name" required/>
+            <input type="text" class="text-input" autocomplete="off" placeholder="Last Name" name="last_name" />
+          </div>
+          <br/>
+
+          <div>
+            <input type="text" placeholder="Email" name="email" />
+            <label> Gender</label>
+            <input type="radio" value="male" name="gender"/>
+            <label> Male</label>
+            <input type="radio" value="female" name="gender"/>
+            <label> Female</label>
+          </div>
+          <br/>
+
+          <div>
+            <select value="country" id="country0">
+              <option value="" class="text-input" autocomplete="off" name="countries">Country</option>
+            </select>
+          </div>
+          <br/>
+
+          <label>Address #1</label>
+          <div>
+            <input type="text" placeholder="City" name="city" id="city0" /><br />
+            <input type="text" placeholder="State" name="state" id="state0"/><br />
+            <input type="Zip" placeholder="Zip" name="zip" id="zip0"/><br />
+          </div>
+          <br/>
+
+          <div id="holdsitems">
+            <p>User can add any number of addresses</p>
+            <button type="button" class="btn btn-warning" id="addsItem">Add more address</button>
+          </div>
+          <br/>
+
+
+          <input type="hidden" name="addresses" value="" id="addresses"/>
+          <br/>
+
+          <div>
+            <input type="file" class="btn btn-secondary" name="profilePic" value="profilePic" id="Browse" accept="Image/*">
+            <!-- <input type="submit" class="btn btn-info" value="Upload your file"> -->
+          </div>
+          <br/>
+
+          <div>
+            <!-- <input type="submit" class="btn btn-success" value="Register" id="submit" /> -->
+            <!-- <input class="my-button" type="button" value="Register" id="submit" onclick="RegisterNow()" /> -->
+            <input type="button" class="btn btn-success" id="other" value="Register"/>
+          </div>
+
+        </div>  
+      </fieldset>
+    </form>
+  
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script type="text/javascript">
+
+
+
+      // api url
+      const api_url = "http://localhost:3000/countries";
+
+      var data= "";
+      // Defining async function
+      async function getCountries(url) {
+        // Storing response
+        const response = await fetch(url);
+
+        // Storing data in form of JSON
+         data = await response.json();
+        // console.log(data);
+
+        var x = document.getElementById("country0");
+
+        data.forEach((element) => {
+          // console.log();
+          var option = document.createElement("option");
+          option.text = element.name;
+          x.add(option);
+        });
+      }
+ 
+      getCountries(api_url);
+
+      // function addAddress(){
+
+      //     var address =
+
+      //       var btn = document.getElementById("moreAddress").innerHTML += address;
+
+      // }
+
+      // Add new item on click of add button
+      var i = 0;
+      $("#addsItem").click(function (event) {
+        i = i + 1;
+        // Stop submission of form - this is not necessary if you take it out of the form
+        event.preventDefault();
+
+        // Append new form item
+        $("#holdsitems").append(` <div class="card" id="address${i}">
+                                <fieldset>
+                                    <legend>Alternate Address</legend>
+                                    <div>
+                                        <select id="country${i}" value="country">
+                                          <option value="">Select Country</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <input id="city${i}" type="text" placeholder="City"><br>
+                                        <input id="state${i}" type="text" placeholder="State"><br>
+                                        <input id="zip${i}" type="Zip" placeholder="Zip">
+                                    </div><br>
+
+                                    <div >
+                                            <button id = "x" type="button" class="deleteItem" onclick="removeAdd('address${i}')" value="button">
+                                                X
+                                             </button>
+                                    </div>
+
+                                    
+                                </fieldset>
+                            </div>`);
+
+
+                            var x = document.getElementById("country"+i);
+
+data.forEach((element) => {
+  // console.log();
+  var option = document.createElement("option");
+  option.text = element.name;
+  x.add(option);
+
+});
+      });
+
+      function removeAdd(value) {
+        // alert(value);
+        $("#" + value).remove();
+      }
+
+
+
+      // So you will have to do something like the following...
+// $('#formId').submit(function(e){
+// 	// Stop the form submitting
+//   	e.preventDefault();
+//   	// Do whatever it is you wish to do
+//   	//...
+//   	// Now submit it 
+//     // Don't use $(this).submit() FFS!
+//   	// You'll never leave this function & smash the call stack! :D
+//       address = [];
+//         for(var q=0; q<=i;q++){
+//           json = {
+//             country:$('#country'+q).val(),
+//             city:$('#city'+q).val(),
+//             state:$('#state'+q).val(),
+//             zip:$('#zip'+q).val()
+//           }
+//           address.push(json);
+//         }
+//       document.getElementById('addresses').value = JSON.stringify(address);
+//       // $('#formId').submit();
+//       document.getElementById("formId").submit()
+//     // return false;
+// });
+
+$( "#other" ).click(function() {
+
+  address = [];
+        for(var q=0; q<=i;q++){
+          json = {
+            country:$('#country'+q).val(),
+            city:$('#city'+q).val(),
+            state:$('#state'+q).val(),
+            zip:$('#zip'+q).val()
+          }
+          address.push(json);
+          
+        }
+        document.getElementById('addresses').value = JSON.stringify(address);
+
+  $( "#formId" ).submit();
+});
+
+
+      function RegisterNow(){
+        address = [];
+        for(var q=0; q<=i;q++){
+          json = {
+            country:$('#country'+q).val(),
+            city:$('#city'+q).val(),
+            state:$('#state'+q).val(),
+            zip:$('#zip'+q).val()
+          }
+          address.push(json);
+          
+        }
+        document.getElementById('addresses').value = JSON.stringify(address);
+        $("#formId").submit();
+      }
+      
+    </script>
+  </body>
+</html>

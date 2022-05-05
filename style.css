@@ -1,0 +1,28 @@
+body{
+
+    display:flex;
+    text-align:center;
+    margin:auto;
+    margin: 20px;
+    
+}
+
+/* add more address card */
+.card{
+    border:1px solid black;  
+
+}
+
+
+.text-input{
+padding: 0.8rem;
+width: 100%;
+height: 100%;
+border: 2px solid #2f2c45;
+background: #272530;
+border-radius: 5px;
+ font-size: 18px;
+outline: none;
+transition: all 0.3s;
+color: #fff;
+}
